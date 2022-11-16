@@ -30,23 +30,12 @@ class _HomePageState extends State<HomePage> {
           Icon(Icons.settings),
         ],
       ),
-      drawer: Drawer(
-        child: Wrap(
-
-        ),  
-      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Ana sayfa"),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: "Ara"),
           BottomNavigationBarItem(icon: Icon(Icons.library_music_rounded), label: "Kitaplığın"),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: (){
-          print("Butona Basıldı");
-        },
       ),
       body: const Center(
         //title: Image.asset("assets/images/spot.png"),
