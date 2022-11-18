@@ -10,7 +10,9 @@ import 'package:spotify_clone/model/music.dart';
 import 'package:spotify_clone/service/category_operations.dart';
 import 'package:spotify_clone/service/music_operations.dart';
 class Home extends StatelessWidget {
-  const Home({super.key});
+  Function _miniPlayer;
+  Home(this._miniPlayer);
+  //const Home({super.key});
 
   Widget createCategory(Category category){
     return Container(
@@ -38,31 +40,45 @@ class Home extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(10),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           height: 200,
           width: 200,
-          child: Image.network(music.image, fit: BoxFit.cover,
+          child: InkWell(
+            onTap: (() {
+              _miniPlayer(music);
+            }),
+            child: Image.network(music.image, fit: BoxFit.cover,
+            ),)
           ),
-        ),
-        Text(music.name),
-        Text(music.desc)
+            Text(music.name, style: TextStyle(color: Colors.white)),
+            Text(music.desc, style: TextStyle(color: Colors.white)
+         ),
       ],
      ),
     );
   }
   Widget createMusicList(String label){
     List<Music> musicList = MusicOperations.getMusic();
-    return Container(
+    return Padding(
+      padding: EdgeInsets.only(left: 10),
+      child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children:[ Text(label, style: TextStyle(color: Colors.white, fontSize: 20,fontWeight:FontWeight.bold),
+      ),
+      Container(
       height: 300,
       child: ListView.builder(
-        padding: EdgeInsets.all(5),
+        //padding: EdgeInsets.all(5),
         scrollDirection: Axis.horizontal,
         itemBuilder: (ctx, index) {
           return createMusic(musicList[index]);
         }, 
         itemCount: musicList.length,
-      ),
+        ),
+      )],
+     ),
     );
   }
 
@@ -70,9 +86,9 @@ class Home extends StatelessWidget {
   Widget createGrid(){
     return Container(
       padding: EdgeInsets.all(10),
-      height: 300,
+      height: 240,
       child: GridView.count(
-        childAspectRatio: 6.5 / 2,
+        childAspectRatio: 6 / 2,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
         children: createListOfCategories(),
@@ -91,24 +107,27 @@ class Home extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Container(
-          child: Column(children: [
-            createAppBar('Good evening'), 
-            SizedBox(height: 5,
-            ),
-            createGrid(),
-            createMusicList('Music for you'),
-          ],
-        ),
-      decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-        Colors.blueGrey.shade300,
-        Colors.black], 
-        begin: Alignment.topLeft, 
-        end: Alignment.bottomRight,
-        stops: [0.1, 0.3] )),
-        //color: Colors.orange,
-     ));
+    return SingleChildScrollView(
+      child: SafeArea(
+          child: Container(
+            child: Column(children: [
+              createAppBar('İyi akşamlar'), 
+              SizedBox(height: 5,
+              ),
+              createGrid(),
+              createMusicList('Sana özel bölümler'),
+              createMusicList('Popüler listeler')
+            ],
+          ),
+        decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+          Colors.blueGrey.shade300,
+          Colors.black], 
+          begin: Alignment.topLeft, 
+          end: Alignment.bottomRight,
+          stops: [0.1, 0.3] )),
+          //color: Colors.orange,
+       )),
+    );
   }
 }
